@@ -1,12 +1,11 @@
 import db_connection
-import user
+import helper
 
 
 class Login:
     def __init__(self):
         self.choice = None
-        self.user = user.User()
-
+        self.user = helper.User()
         #initialize connection
         db_c = db_connection.Connect()
         self.connection = db_c.get_connection()
@@ -14,6 +13,7 @@ class Login:
     
     def display_login_choices(self):
         self.choice = int(input("If you are an existing user enter [0] | If you would like to create an account enter [1]:\n"))
+
 
     def create_account(self):
         account_created = 0
@@ -37,6 +37,7 @@ class Login:
             else:
                 print("Email already exists, please try again.")
 
+
     def login_account(self):
         logged_in = 0
 
@@ -45,7 +46,7 @@ class Login:
             #check email exists & get user's first and last name.
             cursor = self.connection.cursor()
             cursor.execute('''
-                            SELECT first_name, last_name
+                            SELECT email, first_name, last_name
                             FROM "User"
                             where "User".email = %s;
                             ''', (email,))
@@ -55,9 +56,9 @@ class Login:
             if result is None:
                 print("Invalid email, please try again.")
             else:
-                first_name = result[0]
-                last_name = result[1]
-                print ("welcome back ", first_name, last_name, "!")
+                #set cursor result into complete object.
+                self.user.convert_results(result)
+                print ("welcome back ", self.user.first_name, self.user.last_name, "!")
                 logged_in = 1
 
     def login_flow(self):
@@ -74,4 +75,3 @@ class Login:
 
         else:
             print("Enter a valid choice")
-    
