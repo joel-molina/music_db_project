@@ -120,7 +120,7 @@ class Music:
                 track.convert_results(results[i])
                 object_results.append(track)
 
-            for i in object_results:
+            for track in object_results:
                 print(f"Track: {track.track_name}, artist(s): {track.artist}, streams: {track.streams}, release year: {track.released_year}")
 
 
