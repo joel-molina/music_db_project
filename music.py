@@ -1,4 +1,5 @@
 import db_connection
+import helper
 
 class Music:
     def add_favorite_song(self, email):
@@ -112,8 +113,15 @@ class Music:
             print("You have no favorite songs yet!")
         else:
             print("Favorite songs: [Name, artist(s), # of streams, release year]")
+            #Convert cursor result to complete object.
+            object_results = []
             for i in range(len(results)):
-                print(results[i])
+                track = helper.Track()
+                track.convert_results(results[i])
+                object_results.append(track)
+
+            for i in object_results:
+                print(f"Track: {track.track_name}, artist(s): {track.artist}, streams: {track.streams}, release year: {track.released_year}")
 
 
     def display_charts_information(self, email):
@@ -138,6 +146,7 @@ class Music:
             print("You have no favorite songs yet!")
         else:
             print("Favorite songs AND their peak position on the spotify, apple, shazam charts:")
+            print("0 indicates did not reach the top charts.")
             for i in range(len(results)):
                 print(results[i])
 
